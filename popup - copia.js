@@ -64,7 +64,7 @@ time_left = hour_left * 60 + min_left + sec_left;
 var alarmClock = {
 
         onHandler : function(e) {
-            chrome.alarms.create("myAlarm", {delayInMinutes: time_left, periodInMinutes: 0.2} );
+            chrome.alarms.create("myAlarm", {delayInMinutes: 0.1, periodInMinutes: 0.2} );
                     window.close();
         },
 

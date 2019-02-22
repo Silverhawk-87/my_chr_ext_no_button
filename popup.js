@@ -17,6 +17,7 @@ var d = new Date();
  // --------------------------------------------------------------
 
 var DEFAULT_PHRASE = "I hpe it works";
+var storephrase = storephrase = localStorage.getItem('text');
 
  // --------------------------------------------------------------
 
@@ -48,18 +49,8 @@ console.log("then " + time_to_minutes(done_hour,done_minutes,done_seconds));
 
 console.log(time_left);       // --------- just because
 
-// ------------------------------------------------------------------------------------
-
-/*var phrase = localStorage['phrase'] || DEFAULT_PHRASE;
-  $('phrase').value = phrase;
-  $('phrase').addEventListener('change', function(evt) {
-    localStorage['phrase'] = $('phrase').value;
-  }, false);
-
-  phrase = localStorage['phrase'] || DEFAULT_PHRASE;
-
 // --------------------------------------------------------------------------------------
-*/
+
  var options = {
     type: "basic", 
     title: "Notification",  
@@ -67,18 +58,26 @@ console.log(time_left);       // --------- just because
     iconUrl: "cfe_icon.png"
 }
 
+// ------------------------------------------------------------------------------------
+
 document.addEventListener('DOMContentLoaded', function () {
     var click =  document.getElementById("mybutton")
     click.addEventListener("click", mymessage);
 });
 
+/*  var phrase = localStorage['phrase'] || DEFAULT_PHRASE;
+  $('phrase').value = phrase;
+  $('phrase').addEventListener('change', function(evt) {
+    localStorage['phrase'] = $('phrase').value;
+  }, false);*/
+
 function mymessage(){
     // store the value
-    var myphrase = document.getElementById('phrase').value;
+    var myphrase = document.getElementById('phrase').value || DEFAULT_PHRASE;
     //                      type
     localStorage.setItem('text', myphrase);
     // pull the value
-    var storephrase = localStorage.getItem('text');
+    storephrase = localStorage.getItem('text');
     document.getElementById('phrase').value = storephrase;
 
 
@@ -116,6 +115,7 @@ var alarmClock = {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('phrase').value = storephrase || DEFAULT_PHRASE;
     chrome.notifications.create(options, callback);
     alarmClock.setup();
 });

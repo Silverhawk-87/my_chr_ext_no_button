@@ -10,7 +10,7 @@
   ],
 
   "background": {
-    "scripts": ["eventPage.js"],
+    "scripts": ["popup.js", "eventPage.js"],
     "persistent": false
   },
 

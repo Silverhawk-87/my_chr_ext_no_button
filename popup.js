@@ -59,13 +59,38 @@ console.log(time_left);       // --------- just because
   phrase = localStorage['phrase'] || DEFAULT_PHRASE;
 
 // --------------------------------------------------------------------------------------
-
+*/
  var options = {
     type: "basic", 
     title: "Notification",  
     message: "Epa! " + time_left + " en minutos para la mera hora. Anio " + year + " mes " + month + " dia " +  date,
     iconUrl: "cfe_icon.png"
-}*/
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var click =  document.getElementById("mybutton")
+    click.addEventListener("click", mymessage);
+});
+
+function mymessage(){
+    // store the value
+    var myphrase = document.getElementById('phrase').value;
+    //                      type
+    localStorage.setItem('text', myphrase);
+    // pull the value
+    var storephrase = localStorage.getItem('text');
+    document.getElementById('phrase').value = storephrase;
+
+
+    var options = {
+    type: "basic", 
+    title: "Notification", 
+    message: "Epa!. This is the message, Aguamilpa " + storephrase, 
+    iconUrl: "cfe_icon.png"
+    }
+
+    chrome.notifications.create(options, callback);
+}
 
 //--------------------------------------------------------------------------------------
 

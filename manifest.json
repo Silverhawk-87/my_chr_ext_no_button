@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
 
-  "name": "Alarm test",
+  "name": "Alarm test, in progress, very shitty so far",
   "description": "This extension alarms. Modyfied thoug",
   "version": "1.0",
 
   "permissions": [
-    "alarms", "notifications"
+    "alarms", "notifications", "background"
   ],
 
   "background": {

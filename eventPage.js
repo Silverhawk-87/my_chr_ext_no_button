@@ -1,3 +1,3 @@
 chrome.alarms.onAlarm.addListener(function(alarm) {
-  alert("Beep");
+  alert("Beep, mutha efing beeep!");
 });

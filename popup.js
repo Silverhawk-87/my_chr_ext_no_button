@@ -1,3 +1,4 @@
+// ITS ALL GOOD MAN
 var done_hour = 13;
 var done_minutes = 54;
 var done_seconds = 0;
@@ -12,6 +13,10 @@ var d = new Date();
     month = d.getMonth();
     date = d.getDate();
     day = d.getDay();       // of the week  0 to 6 sunday, monday, tuesday and so on, i think
+
+ // --------------------------------------------------------------
+
+var DEFAULT_PHRASE = "I hpe it works";
 
  // --------------------------------------------------------------
 
@@ -43,12 +48,24 @@ console.log("then " + time_to_minutes(done_hour,done_minutes,done_seconds));
 
 console.log(time_left);       // --------- just because
 
+// ------------------------------------------------------------------------------------
+
+/*var phrase = localStorage['phrase'] || DEFAULT_PHRASE;
+  $('phrase').value = phrase;
+  $('phrase').addEventListener('change', function(evt) {
+    localStorage['phrase'] = $('phrase').value;
+  }, false);
+
+  phrase = localStorage['phrase'] || DEFAULT_PHRASE;
+
+// --------------------------------------------------------------------------------------
+
  var options = {
     type: "basic", 
     title: "Notification",  
     message: "Epa! " + time_left + " en minutos para la mera hora. Anio " + year + " mes " + month + " dia " +  date,
     iconUrl: "cfe_icon.png"
-}
+}*/
 
 //--------------------------------------------------------------------------------------
 
@@ -57,7 +74,6 @@ var alarmClock = {
 
         onHandler : function(e) {
             chrome.alarms.create("myAlarm", {delayInMinutes: 0.1, periodInMinutes: 0.2} );
-            var myphrase = document.getElementById("phrase");
                     window.close();
         },
 

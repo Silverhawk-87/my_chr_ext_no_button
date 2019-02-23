@@ -3,6 +3,8 @@
 <head>
 <title>Alarms Popup</title>
 
+<!-- -------------------------------------------------------------------------------- -->
+
 <script src="popup.js"></script>
 </head>
 <body>
@@ -10,7 +12,102 @@
 <a href="" id="alarmOff">OFF</a>
 </ul>
 
-<div class="ctrl_wrap">
+<!-- -------------------------------------------------------------------------------- -->
+
+<div>
+	<select id="select_h">
+	  <option value="n1">N1</option>
+	  <option selected value="0">0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	  <option value="7">7</option>
+	  <option value="8">8</option>
+	  <option value="9">9</option>
+	  <option value="10">10</option>
+	  <option value="11">11</option>
+	  <option value="12">12</option>
+	</select>
+
+	<select id = "select_ampm">
+		<option value = "am">am</option>
+		<option value = "pm">pm</option>
+	</select>
+
+	<button id="sel_hour_button" title="hour" value = "click to submit the hour">
+	</button>
+</div>
+
+<!-- -------------------------------------------------------------------------------- -->
+
+<div>
+	<select id="select_dec_m">
+	  <option value="n1">N1</option>
+	  <option selected value="0">0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	</select>
+
+	<select id="select_uni_m">
+	  <option value="n1">N1</option>
+	  <option selected value="0">0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	  <option value="7">7</option>
+	  <option value="8">8</option>
+	  <option value="9">9</option>
+	</select>
+
+	<button id="sel_minute_button" title="minute" value = "click to submit the minute">
+	</button>
+</div>
+
+<!-- -------------------------------------------------------------------------------- -->
+
+<div>
+	<select id="select_dec_s">
+	  <option value="n1">N1</option>
+	  <option selected value="0">0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	</select>
+
+	<select id="select_uni_s">
+	  <option value="n1">N1</option>
+	  <option selected value="0">0</option>
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	  <option value="7">7</option>
+	  <option value="8">8</option>
+	  <option value="9">9</option>
+	</select>
+
+	<button id="sel_second_button" title="second" value = "click to submit the second">
+	</button>
+</div>
+
+<!-- -------------------------------------------------------------------------------- -->
+
+<div>
   <label for="sound">Phrase, this is a prhase i guess</label>
   <textarea id="phrase"></textarea>
   <button id="mybutton" title="some button" value = "I'm a button, so...">

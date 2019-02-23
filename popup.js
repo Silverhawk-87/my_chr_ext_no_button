@@ -65,12 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
     click.addEventListener("click", mymessage);
 });
 
-/*  var phrase = localStorage['phrase'] || DEFAULT_PHRASE;
-  $('phrase').value = phrase;
-  $('phrase').addEventListener('change', function(evt) {
-    localStorage['phrase'] = $('phrase').value;
-  }, false);*/
-
 function mymessage(){
     // store the value
     var myphrase = document.getElementById('phrase').value || DEFAULT_PHRASE;
@@ -80,11 +74,13 @@ function mymessage(){
     storephrase = localStorage.getItem('text');
     document.getElementById('phrase').value = storephrase;
 
+    var sel_hour = get_selection_current('select_h');
+    var sel_ampm = get_selection_current('select_ampm');
 
     var options = {
     type: "basic", 
     title: "Notification", 
-    message: "Epa!. This is the message, Aguamilpa " + storephrase, 
+    message: "Epa!. This is the message, Aguamilpa " + storephrase + " " + sel_hour + sel_ampm, 
     iconUrl: "cfe_icon.png"
     }
 
@@ -93,6 +89,13 @@ function mymessage(){
 
 //--------------------------------------------------------------------------------------
 
+function get_selection_current(html_id){
+    var selection_spinner = document.getElementById(html_id);
+    var current_spinner = selection_spinner.options[selection_spinner.selectedIndex].value;
+    return current_spinner;
+}
+
+//--------------------------------------------------------------------------------------
 
 var alarmClock = {
 

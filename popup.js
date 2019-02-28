@@ -77,10 +77,20 @@ function mymessage(){
     var sel_hour = get_selection_current('select_h');
     var sel_ampm = get_selection_current('select_ampm');
 
+    if(sel_ampm == 'pm')
+        sel_hour = 12 + +sel_hour;
+
+    var sel_min = get_selection_current('select_dec_m');
+    sel_min = sel_min + get_selection_current('select_uni_m');
+
+    var sel_sec = get_selection_current('select_dec_s');
+    sel_sec = sel_sec + get_selection_current('select_uni_s');
+
+
     var options = {
     type: "basic", 
     title: "Notification", 
-    message: "Epa!. This is the message, Aguamilpa " + storephrase + " " + sel_hour + sel_ampm, 
+    message: "Epa!. This is the message, Aguamilpa " + storephrase + " " + sel_hour + ":" + sel_min + ":" + sel_sec, 
     iconUrl: "cfe_icon.png"
     }
 

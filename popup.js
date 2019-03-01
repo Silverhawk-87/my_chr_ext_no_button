@@ -19,7 +19,7 @@ var d = new Date();
 var DEFAULT_PHRASE = "I hpe it works";
 var stored_phrase = localStorage.getItem('localst_phrase');
 
-var stored_hour_index = localStorage.getItem('localst_hour');
+/*var stored_hour_index = localStorage.getItem('localst_hour');
 var stored_ampm_index = localStorage.getItem('localst_ampm');
 var stored_dec_min_index = localStorage.getItem('localst_dec_min');
 var stored_uni_min_index = localStorage.getItem('localst_uni_min');
@@ -27,7 +27,10 @@ var stored_dec_seg_index = localStorage.getItem('localst_dec_seg');
 var stored_uni_seg_index = localStorage.getItem('localst_uni_seg');
 var stored_year_index = localStorage.getItem('localst_full_year');
 var stored_month_index = localStorage.getItem('localst_month');
-var stored_date_index = localStorage.getItem('localst_date');
+var stored_date_index = localStorage.getItem('localst_date');*/
+
+var stored_time_picker = localStorage.getItem('localst_time_picker');
+var stored_date_picker = localStorage.getItem('localst_date_picker');
 
  // --------------------------------------------------------------
 
@@ -50,18 +53,6 @@ function time_to_minutes(hour, minutes, seconds){
     var time_in_minutes = hour*60 + minutes + seconds/60;
     return time_in_minutes; 
 }
-
-//--------------------------------------------------------------------------------------
-
-function get_selection_current(html_id){
-    var selection_spinner = document.getElementById(html_id);
-    var index_spinner = selection_spinner.options[selection_spinner.selectedIndex].index;
-    var current_spinner = selection_spinner.options[selection_spinner.selectedIndex].value;
-
-    let sel_current_and_index = [current_spinner,index_spinner]
-    return current_spinner;
-}
-
 //--------------------------------------------------------------------------------------
 
 function mymessage(){
@@ -73,17 +64,15 @@ function mymessage(){
     document.getElementById('phrase').value = stored_phrase;
 
     //  -------------------------------------------------------------------------------------
+    //var sel_full_hour = (sel_ampm == "pm")? (12 + +sel_hour):sel_hour;
 
-    var sel_hour = get_selection_current('select_hour');
-    var sel_ampm = get_selection_current('select_ampm');
-
-    var sel_full_hour = (sel_ampm == "pm")? (12 + +sel_hour):sel_hour;
-
-        document.getElementById('select_date').size = 10;
 
     store_selection_state();
+
+    var minutes_time_picker = document.getElementById('time_picker').value.substring(3);
+    var hour_time_picker = document.getElementById('time_picker').value.substring(0,2);
     
-    options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + sel_full_hour;
+    options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + hour_time_picker + " " + minutes_time_picker + " " + document.getElementById('date_picker').value;
     chrome.notifications.create(options, callback);
 }
 
@@ -93,63 +82,24 @@ function store_selection_state(){
 
     //  ---------------------------------------------------------------------
 
-    var myhour = document.getElementById('select_hour').selectedIndex;
-    var myampm = document.getElementById('select_ampm').selectedIndex;
-
-    var mydec_min = document.getElementById('select_dec_min').selectedIndex;
-    var myuni_min = document.getElementById('select_uni_min').selectedIndex;
-
-    var mydec_seg = document.getElementById('select_dec_seg').selectedIndex;
-    var myuni_seg = document.getElementById('select_uni_seg').selectedIndex;
-
-    var myyear = document.getElementById('select_full_year').selectedIndex;
-    var mymonth = document.getElementById('select_month').selectedIndex;
-    var mydate = document.getElementById('select_date').selectedIndex;
+    var mytime = document.getElementById('time_picker').value;
+    var mydate = document.getElementById('date_picker').value;
 
     //  ---------------------------------------------------------------------
     
-    localStorage.setItem('localst_hour', myhour);
-    localStorage.setItem('localst_ampm', myampm);
-
-    localStorage.setItem('localst_dec_min', mydec_min);
-    localStorage.setItem('localst_uni_min', myuni_min);
-
-    localStorage.setItem('localst_dec_seg', mydec_seg);
-    localStorage.setItem('localst_uni_seg', myuni_seg);
-
-    localStorage.setItem('localst_full_year', myyear);
-    localStorage.setItem('localst_month', mymonth);
-    localStorage.setItem('localst_date', mydate);
+    localStorage.setItem('localst_time_picker', mytime);
+    localStorage.setItem('localst_date_picker', mydate);
 
     //  ---------------------------------------------------------------------
 
-    stored_hour_index = localStorage.getItem('localst_hour');
-    stored_ampm_index = localStorage.getItem('localst_ampm');
+    stored_time_picker = localStorage.getItem('localst_time_picker');
+    stored_date_picker = localStorage.getItem('localst_date_picker');
 
-    stored_dec_min_index = localStorage.getItem('localst_dec_min');
-    stored_uni_min_index = localStorage.getItem('localst_uni_min');
-
-    stored_dec_seg_index = localStorage.getItem('localst_dec_seg');
-    stored_uni_seg_index = localStorage.getItem('localst_uni_seg');
-
-    stored_year_index = localStorage.getItem('localst_full_year');
-    stored_month_index = localStorage.getItem('localst_month');
-    stored_date_index = localStorage.getItem('localst_date');
 
     //  ---------------------------------------------------------------------
 
-    document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
-    document.getElementById('select_ampm').selectedIndex = stored_ampm_index || 0;
-
-    document.getElementById('select_dec_min').selectedIndex = stored_dec_min_index || 0;
-    document.getElementById('select_uni_min').selectedIndex = stored_uni_min_index || 0;
-
-    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg_index || 0;
-    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg_index || 0;
-
-    document.getElementById('select_full_year').selectedIndex = stored_year_index || 0;
-    document.getElementById('select_month').selectedIndex = stored_month_index || 0;
-    document.getElementById('select_date').selectedIndex = stored_date_index || 0;
+    document.getElementById('time_picker').selectedIndex = stored_time_picker;
+    document.getElementById('date_picker').selectedIndex = stored_date_picker;
 
 }
 
@@ -197,7 +147,7 @@ var alarmClock = {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('phrase').value = stored_phrase || DEFAULT_PHRASE;
     
-    document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
+    /*document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
     document.getElementById('select_ampm').selectedIndex = stored_ampm_index || 0;
 
     document.getElementById('select_dec_min').selectedIndex = stored_dec_min_index || 0;
@@ -209,8 +159,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('select_full_year').selectedIndex = stored_year_index || 0;
     document.getElementById('select_month').selectedIndex = stored_month_index || 0;
     document.getElementById('select_date').selectedIndex = stored_date_index || 0;
-
-    console.log("is this the current index " + document.getElementById('select_ampm').selectedIndex);
+*/
+    
+    document.getElementById('time_picker').value = stored_time_picker;
+    document.getElementById('date_picker').value = stored_date_picker;
 
     chrome.notifications.create(options, callback);
     alarmClock.setup();

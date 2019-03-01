@@ -1,7 +1,6 @@
 // ITS ALL GOOD MAN
 var done_hour = 13;
 var done_minutes = 54;
-var done_seconds = 0;
 
 var time_left = 0;
 
@@ -10,27 +9,21 @@ var d = new Date();
     mm = d.getMinutes();
     ss = d.getSeconds();
     year = d.getFullYear();
-    month = d.getMonth();
+    month =  1 + +d.getMonth();
     date = d.getDate();
     day = d.getDay();       // of the week  0 to 6 sunday, monday, tuesday and so on, i think
 
  // --------------------------------------------------------------
 
 var DEFAULT_PHRASE = "I hpe it works";
+var DEFAULT_TIME = hh + ":" + mm;
+var DEFAULT_DATE = year + "-" + month + "-" + date;
+
 var stored_phrase = localStorage.getItem('localst_phrase');
-
-/*var stored_hour_index = localStorage.getItem('localst_hour');
-var stored_ampm_index = localStorage.getItem('localst_ampm');
-var stored_dec_min_index = localStorage.getItem('localst_dec_min');
-var stored_uni_min_index = localStorage.getItem('localst_uni_min');
-var stored_dec_seg_index = localStorage.getItem('localst_dec_seg');
-var stored_uni_seg_index = localStorage.getItem('localst_uni_seg');
-var stored_year_index = localStorage.getItem('localst_full_year');
-var stored_month_index = localStorage.getItem('localst_month');
-var stored_date_index = localStorage.getItem('localst_date');*/
-
 var stored_time_picker = localStorage.getItem('localst_time_picker');
 var stored_date_picker = localStorage.getItem('localst_date_picker');
+
+var today = false;
 
  // --------------------------------------------------------------
 
@@ -56,23 +49,13 @@ function time_to_minutes(hour, minutes, seconds){
 //--------------------------------------------------------------------------------------
 
 function mymessage(){
-    //  -------------------------------------------------------------------------------------
     
-    var myphrase = document.getElementById('phrase').value || DEFAULT_PHRASE;
-    localStorage.setItem('localst_phrase', myphrase);
-    stored_phrase = localStorage.getItem('localst_phrase');
-    document.getElementById('phrase').value = stored_phrase;
-
-    //  -------------------------------------------------------------------------------------
-    //var sel_full_hour = (sel_ampm == "pm")? (12 + +sel_hour):sel_hour;
-
-
     store_selection_state();
-
-    var minutes_time_picker = document.getElementById('time_picker').value.substring(3);
-    var hour_time_picker = document.getElementById('time_picker').value.substring(0,2);
     
-    options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + hour_time_picker + " " + minutes_time_picker + " " + document.getElementById('date_picker').value;
+    done_minutes = document.getElementById('time_picker').value.substring(3);
+    done_hour = document.getElementById('time_picker').value.substring(0,2);
+    
+    options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + time_left;
     chrome.notifications.create(options, callback);
 }
 
@@ -82,39 +65,43 @@ function store_selection_state(){
 
     //  ---------------------------------------------------------------------
 
+    var myphrase = document.getElementById('phrase').value || DEFAULT_PHRASE;
     var mytime = document.getElementById('time_picker').value;
     var mydate = document.getElementById('date_picker').value;
 
     //  ---------------------------------------------------------------------
     
+    localStorage.setItem('localst_phrase', myphrase);
     localStorage.setItem('localst_time_picker', mytime);
     localStorage.setItem('localst_date_picker', mydate);
 
     //  ---------------------------------------------------------------------
 
+    stored_phrase = localStorage.getItem('localst_phrase');
     stored_time_picker = localStorage.getItem('localst_time_picker');
     stored_date_picker = localStorage.getItem('localst_date_picker');
 
 
     //  ---------------------------------------------------------------------
 
-    document.getElementById('time_picker').selectedIndex = stored_time_picker;
-    document.getElementById('date_picker').selectedIndex = stored_date_picker;
+    document.getElementById('phrase').value = stored_phrase;
+    document.getElementById('time_picker').value = stored_time_picker;
+    document.getElementById('date_picker').value = stored_date_picker;
 
 }
 
+if(year == stored_date_picker.substring(0,4))
+    if(month == stored_date_picker.substring(6,7))
+        if(date == stored_date_picker.substring(8,10))
+            if(time_to_minutes(done_hour,done_minutes) > time_to_minutes(hh,mm))
+                time_left = time_to_minutes(done_hour,done_minutes) - time_to_minutes(hh,mm);
+            else
+                time_left = "No, sabes que?, ya se te fue.";
+
 //  ------------------------------------------------------------------------------
 
-if(time_to_minutes(done_hour,done_minutes,done_seconds) > time_to_minutes(hh,mm,ss))
-    time_left = time_to_minutes(done_hour,done_minutes,done_seconds) - time_to_minutes(hh,mm,ss);
-else
-    time_left = "Ya se te fue";
-
-// ----------------------------------------------------------------
-
-console.log("now " + time_to_minutes(hh,mm,ss));
-console.log("then " + time_to_minutes(done_hour,done_minutes,done_seconds));
-
+console.log("now " + time_to_minutes(hh,mm));
+console.log("then " + time_to_minutes(done_hour,done_minutes));
 console.log(time_left);       // --------- just because
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -145,25 +132,11 @@ var alarmClock = {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('phrase').value = stored_phrase || DEFAULT_PHRASE;
-    
-    /*document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
-    document.getElementById('select_ampm').selectedIndex = stored_ampm_index || 0;
 
-    document.getElementById('select_dec_min').selectedIndex = stored_dec_min_index || 0;
-    document.getElementById('select_uni_min').selectedIndex = stored_uni_min_index || 0;
+    document.getElementById('phrase').value = stored_phrase || DEFAULT_PHRASE;  
+    document.getElementById('time_picker').value = stored_time_picker || DEFAULT_TIME;
+    document.getElementById('date_picker').value = stored_date_picker || DEFAULT_DATE;
 
-    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg_index || 0;
-    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg_index || 0;
-
-    document.getElementById('select_full_year').selectedIndex = stored_year_index || 0;
-    document.getElementById('select_month').selectedIndex = stored_month_index || 0;
-    document.getElementById('select_date').selectedIndex = stored_date_index || 0;
-*/
-    
-    document.getElementById('time_picker').value = stored_time_picker;
-    document.getElementById('date_picker').value = stored_date_picker;
-
-    chrome.notifications.create(options, callback);
+    //chrome.notifications.create(options, callback);
     alarmClock.setup();
 });

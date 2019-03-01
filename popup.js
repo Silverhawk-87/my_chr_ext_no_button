@@ -19,12 +19,15 @@ var d = new Date();
 var DEFAULT_PHRASE = "I hpe it works";
 var stored_phrase = localStorage.getItem('localst_phrase');
 
-var stored_hour = localStorage.getItem('localst_hour');
-var stored_ampm = localStorage.getItem('localst_ampm');
-var stored_dec_min = localStorage.getItem('localst_dec_min');
-var stored_uni_min = localStorage.getItem('localst_uni_min');
-var stored_dec_seg = localStorage.getItem('localst_dec_seg');
-var stored_uni_seg = localStorage.getItem('localst_uni_seg');
+var stored_hour_index = localStorage.getItem('localst_hour');
+var stored_ampm_index = localStorage.getItem('localst_ampm');
+var stored_dec_min_index = localStorage.getItem('localst_dec_min');
+var stored_uni_min_index = localStorage.getItem('localst_uni_min');
+var stored_dec_seg_index = localStorage.getItem('localst_dec_seg');
+var stored_uni_seg_index = localStorage.getItem('localst_uni_seg');
+var stored_year_index = localStorage.getItem('localst_full_year');
+var stored_month_index = localStorage.getItem('localst_month');
+var stored_date_index = localStorage.getItem('localst_date');
 
  // --------------------------------------------------------------
 
@@ -76,6 +79,8 @@ function mymessage(){
 
     var sel_full_hour = (sel_ampm == "pm")? (12 + +sel_hour):sel_hour;
 
+        document.getElementById('select_date').size = 10;
+
     store_selection_state();
     
     options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + sel_full_hour;
@@ -97,6 +102,10 @@ function store_selection_state(){
     var mydec_seg = document.getElementById('select_dec_seg').selectedIndex;
     var myuni_seg = document.getElementById('select_uni_seg').selectedIndex;
 
+    var myyear = document.getElementById('select_full_year').selectedIndex;
+    var mymonth = document.getElementById('select_month').selectedIndex;
+    var mydate = document.getElementById('select_date').selectedIndex;
+
     //  ---------------------------------------------------------------------
     
     localStorage.setItem('localst_hour', myhour);
@@ -108,27 +117,39 @@ function store_selection_state(){
     localStorage.setItem('localst_dec_seg', mydec_seg);
     localStorage.setItem('localst_uni_seg', myuni_seg);
 
-    //  ---------------------------------------------------------------------
-
-    stored_hour = localStorage.getItem('localst_hour');
-    stored_ampm = localStorage.getItem('localst_ampm');
-
-    stored_dec_min = localStorage.getItem('localst_dec_min');
-    stored_uni_min = localStorage.getItem('localst_uni_min');
-
-    stored_dec_seg = localStorage.getItem('localst_dec_seg');
-    stored_uni_seg = localStorage.getItem('localst_uni_seg');
+    localStorage.setItem('localst_full_year', myyear);
+    localStorage.setItem('localst_month', mymonth);
+    localStorage.setItem('localst_date', mydate);
 
     //  ---------------------------------------------------------------------
 
-    document.getElementById('select_hour').selectedIndex = stored_hour || 0;
-    document.getElementById('select_ampm').selectedIndex = stored_ampm || 0;
+    stored_hour_index = localStorage.getItem('localst_hour');
+    stored_ampm_index = localStorage.getItem('localst_ampm');
 
-    document.getElementById('select_dec_min').selectedIndex = stored_dec_min || 0;
-    document.getElementById('select_uni_min').selectedIndex = stored_uni_min || 0;
+    stored_dec_min_index = localStorage.getItem('localst_dec_min');
+    stored_uni_min_index = localStorage.getItem('localst_uni_min');
 
-    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg || 0;
-    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg || 0;
+    stored_dec_seg_index = localStorage.getItem('localst_dec_seg');
+    stored_uni_seg_index = localStorage.getItem('localst_uni_seg');
+
+    stored_year_index = localStorage.getItem('localst_full_year');
+    stored_month_index = localStorage.getItem('localst_month');
+    stored_date_index = localStorage.getItem('localst_date');
+
+    //  ---------------------------------------------------------------------
+
+    document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
+    document.getElementById('select_ampm').selectedIndex = stored_ampm_index || 0;
+
+    document.getElementById('select_dec_min').selectedIndex = stored_dec_min_index || 0;
+    document.getElementById('select_uni_min').selectedIndex = stored_uni_min_index || 0;
+
+    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg_index || 0;
+    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg_index || 0;
+
+    document.getElementById('select_full_year').selectedIndex = stored_year_index || 0;
+    document.getElementById('select_month').selectedIndex = stored_month_index || 0;
+    document.getElementById('select_date').selectedIndex = stored_date_index || 0;
 
 }
 
@@ -176,14 +197,18 @@ var alarmClock = {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('phrase').value = stored_phrase || DEFAULT_PHRASE;
     
-    document.getElementById('select_hour').selectedIndex = stored_hour || 0;
-    document.getElementById('select_ampm').selectedIndex = stored_ampm || 0;
+    document.getElementById('select_hour').selectedIndex = stored_hour_index || 0;
+    document.getElementById('select_ampm').selectedIndex = stored_ampm_index || 0;
 
-    document.getElementById('select_dec_min').selectedIndex = stored_dec_min || 0;
-    document.getElementById('select_uni_min').selectedIndex = stored_uni_min || 0;
+    document.getElementById('select_dec_min').selectedIndex = stored_dec_min_index || 0;
+    document.getElementById('select_uni_min').selectedIndex = stored_uni_min_index || 0;
 
-    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg || 0;
-    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg || 0;
+    document.getElementById('select_dec_seg').selectedIndex = stored_dec_seg_index || 0;
+    document.getElementById('select_uni_seg').selectedIndex = stored_uni_seg_index || 0;
+
+    document.getElementById('select_full_year').selectedIndex = stored_year_index || 0;
+    document.getElementById('select_month').selectedIndex = stored_month_index || 0;
+    document.getElementById('select_date').selectedIndex = stored_date_index || 0;
 
     console.log("is this the current index " + document.getElementById('select_ampm').selectedIndex);
 

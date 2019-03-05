@@ -20,8 +20,8 @@ var DEFAULT_TIME = hh + ":" + mm;
 var DEFAULT_DATE = year + "-" + month + "-" + date;
 
 var stored_phrase = localStorage.getItem('localst_phrase');
-var stored_time_picker = localStorage.getItem('localst_time_picker');
-var stored_date_picker = localStorage.getItem('localst_date_picker');
+var stored_time_picker = localStorage.getItem('localst_time_picker') || DEFAULT_TIME;
+var stored_date_picker = localStorage.getItem('localst_date_picker') || DEFAULT_DATE;
 
 var today = false;
 
@@ -43,7 +43,12 @@ function callback(){
 // ---------------------------------------------------------------
 
 function time_to_minutes(hour, minutes, seconds){
-    var time_in_minutes = hour*60 + minutes + seconds/60;
+  var time_in_minutes = 0;
+  if(seconds == 0)
+    time_in_minutes = +hour*60 + +minutes;
+  else
+    time_in_minutes = +hour*60 + +minutes + +seconds/60;
+  
     return time_in_minutes; 
 }
 //--------------------------------------------------------------------------------------
@@ -55,7 +60,10 @@ function mymessage(){
     done_minutes = document.getElementById('time_picker').value.substring(3);
     done_hour = document.getElementById('time_picker').value.substring(0,2);
     
-    options.message = "Epa!. This is the message, Aguamilpa " + stored_phrase + " " + time_left;
+    options.message = time_left < 0?"Ya se te fue" : "Epa!. This is the message, Aguamilpa" + stored_phrase + " " + done_hour + " " + done_minutes + " -- " + time_to_minutes(done_hour,done_minutes,0);
+    
+    chrome.tts.speak(options.message);
+
     chrome.notifications.create(options, callback);
 }
 
@@ -90,18 +98,20 @@ function store_selection_state(){
 
 }
 
+//  --------------------------------------------------------------------------------------
+
 if(year == stored_date_picker.substring(0,4))
     if(month == stored_date_picker.substring(6,7))
         if(date == stored_date_picker.substring(8,10))
-            if(time_to_minutes(done_hour,done_minutes) > time_to_minutes(hh,mm))
-                time_left = time_to_minutes(done_hour,done_minutes) - time_to_minutes(hh,mm);
+            if(time_to_minutes(done_hour,done_minutes,0) > time_to_minutes(hh,mm,ss))
+                time_left = time_to_minutes(done_hour,done_minutes,0) - time_to_minutes(hh,mm,ss);
             else
-                time_left = "No, sabes que?, ya se te fue.";
+                time_left = 0;
 
 //  ------------------------------------------------------------------------------
 
-console.log("now " + time_to_minutes(hh,mm));
-console.log("then " + time_to_minutes(done_hour,done_minutes));
+console.log("now " + time_to_minutes(hh,mm,ss));
+console.log("then " + time_to_minutes(done_hour,done_minutes,0));
 console.log(time_left);       // --------- just because
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -114,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 var alarmClock = {
 
         onHandler : function(e) {
-            chrome.alarms.create("myAlarm", {delayInMinutes: 0.1, periodInMinutes: 0.2} );
+            chrome.alarms.create("myAlarm", {delayInMinutes: time_left, periodInMinutes: 0.2} );
                     window.close();
         },
 
@@ -137,6 +147,31 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('time_picker').value = stored_time_picker || DEFAULT_TIME;
     document.getElementById('date_picker').value = stored_date_picker || DEFAULT_DATE;
 
+
+var voice = document.getElementById('voice');
+var voiceArray = [];
+  if (chrome && chrome.tts) {
+    chrome.tts.getVoices(function(va) {
+      voiceArray = va;
+      for (var i = 0; i < voiceArray.length; i++) {
+        var opt = document.createElement('option');
+        var name = voiceArray[i].voiceName;
+        if (name == localStorage['voice']) {
+          opt.setAttribute('selected', '');
+        }
+        opt.setAttribute('value', name);
+        opt.innerText = voiceArray[i].voiceName;
+        voice.appendChild(opt);
+      }
+    });
+  }
+
+    voice.addEventListener('change', function() {
+    var i = voice.selectedIndex;
+    localStorage['voice'] = voiceArray[i].voiceName;
+  }, false);
+
     //chrome.notifications.create(options, callback);
+
     alarmClock.setup();
 });

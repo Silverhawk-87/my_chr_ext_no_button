@@ -6,12 +6,11 @@
   "version": "1.0",
 
   "permissions": [
-    "alarms", "notifications", "background"
+    "alarms", "notifications", "background", "tts"
   ],
 
   "background": {
-    "scripts": ["popup.js", "eventPage.js"],
-    "persistent": false
+    "scripts": ["common.js", "eventPage.js"]
   },
 
   "browser_action": {

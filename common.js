@@ -1,5 +1,5 @@
 var DEFAULT_RATE = 1.0;
-var DEFAULT_VOLUME = 1.0;
+var DEFAULT_VOLUME = 8.0;
 var DEFAULT_PHRASE = 'It\'s $TIME, so get up!';
 var DEFAULT_SOUND = 'ringing';
 

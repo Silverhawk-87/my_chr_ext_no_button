@@ -59,10 +59,14 @@ function mymessage(){
     
     done_minutes = document.getElementById('time_picker').value.substring(3);
     done_hour = document.getElementById('time_picker').value.substring(0,2);
+
+    final_countdown();
+
+    options.message = time_left < 0?"Ya se te fue" : "Epa!. This is the message, Aguamilpa" + stored_phrase + " " + done_hour + " " + done_minutes + " -- " + time_to_minutes(done_hour,done_minutes,0) + " - " + time_left;
     
-    options.message = time_left < 0?"Ya se te fue" : "Epa!. This is the message, Aguamilpa" + stored_phrase + " " + done_hour + " " + done_minutes + " -- " + time_to_minutes(done_hour,done_minutes,0);
-    
-    chrome.tts.speak(options.message);
+   //chrome.tts.speak(options.message);
+
+    speak(options.message);
 
     chrome.notifications.create(options, callback);
 }
@@ -100,19 +104,50 @@ function store_selection_state(){
 
 //  --------------------------------------------------------------------------------------
 
-if(year == stored_date_picker.substring(0,4))
-    if(month == stored_date_picker.substring(6,7))
-        if(date == stored_date_picker.substring(8,10))
-            if(time_to_minutes(done_hour,done_minutes,0) > time_to_minutes(hh,mm,ss))
-                time_left = time_to_minutes(done_hour,done_minutes,0) - time_to_minutes(hh,mm,ss);
-            else
-                time_left = 0;
 
+function speak(text) {
+  var rate = 1.0;//parseFloat(localStorage['rate']) || DEFAULT_RATE;
+  var pitch = 1.0;
+  var volume = 1.0;//parseFloat(localStorage['volume']) || DEFAULT_VOLUME;
+  var voice = localStorage['voice'];
+  chrome.tts.speak(
+      text,
+      {voiceName: voice,
+       rate: rate,
+       pitch: pitch,
+       volume: volume,
+       onEvent: function(evt) {
+         if (evt.type == 'end') {
+           isSpeaking = false;
+         }
+       }
+      });
+}
+
+function final_countdown(){
+
+  var d = new Date();
+    hh = d.getHours();
+    mm = d.getMinutes();
+    ss = d.getSeconds();
+    year = d.getFullYear();
+    month =  1 + +d.getMonth();
+    date = d.getDate();
+    day = d.getDay();       // of the week  0 to 6 sunday, monday, tuesday and so on, i think
+
+    if(year == stored_date_picker.substring(0,4))
+        if(month == stored_date_picker.substring(6,7))
+            if(date == stored_date_picker.substring(8,10))
+                if(time_to_minutes(done_hour,done_minutes,0) > time_to_minutes(hh,mm,ss))
+                    time_left = time_to_minutes(done_hour,done_minutes,0) - time_to_minutes(hh,mm,ss);
+                else
+                    time_left = 0;
+
+    console.log("now " + time_to_minutes(hh,mm,ss));
+    console.log("then " + time_to_minutes(done_hour,done_minutes,0));
+    console.log(time_left);       // --------- just because
+}
 //  ------------------------------------------------------------------------------
-
-console.log("now " + time_to_minutes(hh,mm,ss));
-console.log("then " + time_to_minutes(done_hour,done_minutes,0));
-console.log(time_left);       // --------- just because
 
 document.addEventListener('DOMContentLoaded', function () {
     var click =  document.getElementById("mybutton")
@@ -124,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 var alarmClock = {
 
         onHandler : function(e) {
+            final_countdown();
             chrome.alarms.create("myAlarm", {delayInMinutes: time_left, periodInMinutes: 0.2} );
                     window.close();
         },
